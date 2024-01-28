@@ -25,7 +25,7 @@ namespace esphome
                 void set_active_energy_sensors(sensor::Sensor *active_energy_plus, sensor::Sensor *active_energy_minus);
                 void set_reactive_energy_sensors(sensor::Sensor *reactive_energy_plus, sensor::Sensor *reactive_energy_minus);
                 void set_timestamp_sensor(text_sensor::TextSensor *timestamp);
-
+                void set_evnspecial_sensor(sensor::Sensor *power_factor, text_sensor::TextSensor *meternumber);
                 void enable_mqtt(mqtt::MQTTClientComponent *mqtt_client, const char *topic);
 
                 void set_key(uint8_t key[], size_t keyLength);
@@ -62,6 +62,10 @@ namespace esphome
                 sensor::Sensor *reactive_energy_minus = NULL; // Reactive energy put into grid
 
                 text_sensor::TextSensor *timestamp = NULL; // Text sensor for the timestamp value
+
+# EVN Special
+                sensor::Sensor *power_factor = NULL; // Power Factor
+                text_sensor::TextSensor *meternumber = NULL; // Text sensor for the meterNumber value
 
                 mqtt::MQTTClientComponent *mqtt_client = NULL;
 
