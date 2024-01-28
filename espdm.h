@@ -63,7 +63,7 @@ namespace esphome
 
                 text_sensor::TextSensor *timestamp = NULL; // Text sensor for the timestamp value
 
-# EVN Special
+// EVN Special
                 sensor::Sensor *power_factor = NULL; // Power Factor
                 text_sensor::TextSensor *meternumber = NULL; // Text sensor for the meterNumber value
 
