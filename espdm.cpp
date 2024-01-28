@@ -362,7 +362,7 @@ namespace esphome
                                 this->current_l2->publish_state(floatValue);
                             else if(codeType == CodeType::CurrentL3 && this->current_l3 != NULL && this->current_l3->state != floatValue)
                                 this->current_l3->publish_state(floatValue);
-# EVN Special
+// EVN Special
                             else if(codeType == CodeType::PowerFactor && this->power_factor != NULL && this->power_factor->state != floatValue)
                                 this->power_factor->publish_state(floatValue / 1000.0);
 
