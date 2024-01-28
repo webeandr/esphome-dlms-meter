@@ -288,7 +288,6 @@ namespace esphome
                             codeType = CodeType::DeviceName;
                         }
 // EVN Special
-                        }
                         else if(memcmp(&obisCode[OBIS_C], ESPDM_POWER_FACTOR, 2) == 0)
                         {
                             codeType = CodeType::PowerFactor;
