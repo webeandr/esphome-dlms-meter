@@ -287,6 +287,13 @@ namespace esphome
                         {
                             codeType = CodeType::DeviceName;
                         }
+// EVN Special
+                        }
+                        else if(memcmp(&obisCode[OBIS_C], ESPDM_POWER_FACTOR, 2) == 0)
+                        {
+                            codeType = CodeType::PowerFactor;
+                        }
+
                         else
                         {
                             ESP_LOGW(TAG, "OBIS: Unsupported OBIS code");
@@ -355,6 +362,9 @@ namespace esphome
                                 this->current_l2->publish_state(floatValue);
                             else if(codeType == CodeType::CurrentL3 && this->current_l3 != NULL && this->current_l3->state != floatValue)
                                 this->current_l3->publish_state(floatValue);
+# EVN Special
+                            else if(codeType == CodeType::PowerFactor && this->power_factor != NULL && this->power_factor->state != floatValue)
+                                this->power_factor->publish_state(floatValue / 1000.0);
 
                         break;
                         case DataType::OctetString:
@@ -387,6 +397,16 @@ namespace esphome
 
                                 this->timestamp->publish_state(timestamp);
                             }
+                            else if(codeType == CodeType::MeterNumber)
+                            {
+                                ESP_LOGV(TAG, "Constructing MeterNumber...");
+                                char meterNumber[13]; // 121110284568
+
+                                memcpy(meterNumber, &plaintext[currentPosition], dataLength);
+                                meterNumber[12] = '\0';
+
+                                this->meternumber->publish_state(meterNumber);
+                            }
 
                         break;
                         default:
@@ -400,7 +420,9 @@ namespace esphome
                     currentPosition += 2; // Skip break after data
 
                     if(plaintext[currentPosition] == 0x0F) // There is still additional data for this type, skip it
-                        currentPosition += 6; // Skip additional data and additional break; this will jump out of bounds on last frame
+                        // on EVN Meters the additional data (no additional Break) is only 3 Bytes + 1 Byte for the "there is data" Byte
+                        currentPosition += 4; // Skip additional data and additional break; this will jump out of bounds on last frame
+                        // currentPosition += 6; // Skip additional data and additional break; this will jump out of bounds on last frame
                 }
                 while (currentPosition <= messageLength); // Loop until arrived at end
 
@@ -448,6 +470,16 @@ namespace esphome
                         {
                             root["timestamp"] = this->timestamp->state;
                         }
+// EVN Special
+                        if(this->power_factor != NULL)
+                        {
+                            root["power_factor"] = this->power_factor->state;
+                        }
+                        if(this->meternumber != NULL)
+                        {
+                            root["meternumber"] = this->meternumber->state;
+                        }
+                        
                     });
                 }
             }
@@ -509,6 +541,12 @@ namespace esphome
         void DlmsMeter::set_timestamp_sensor(text_sensor::TextSensor *timestamp)
         {
             this->timestamp = timestamp;
+        }
+
+        void set_evnspecial_sensor(sensor::Sensor *power_factor, text_sensor::TextSensor *meternumber);
+        {
+            this->power_factor = power_factor;
+            this->meternumber = meternumber;
         }
 
         void DlmsMeter::enable_mqtt(mqtt::MQTTClientComponent *mqtt_client, const char *topic)
