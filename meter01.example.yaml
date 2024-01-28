@@ -97,6 +97,15 @@ sensor:
     device_class: "power"
     state_class: "measurement"
 
+# uncomment for EVN SmartMeter
+#  - platform: template
+#    id: meter01_power_factor
+#    name: meter01_power_factor
+#    unit_of_measurement: " "
+#    accuracy_decimals: 3
+#    device_class: "power_factor"
+#    state_class: "measurement"
+
   - platform: template
     id: meter01_active_energy_plus
     name: meter01_active_energy_plus
@@ -131,6 +140,10 @@ text_sensor:
   - platform: template
     id: meter01_timestamp
     name: meter01_timestamp
+# uncomment for EVN SmartMeter
+#  - platform: template
+#    id: meter01_meternumber
+#    name: meter01_meternumber
 
 mqtt:
   broker: 192.168.1.1
@@ -145,15 +158,13 @@ custom_component:
       dlms_meter->set_key(key, 16); // Pass your decryption key and key length here
 
       dlms_meter->set_voltage_sensors(id(meter01_voltage_l1), id(meter01_voltage_l2), id(meter01_voltage_l3)); // Set sensors to use for voltage (optional)
-
       dlms_meter->set_current_sensors(id(meter01_current_l1), id(meter01_current_l2), id(meter01_current_l3)); // Set sensors to use for current (optional)
-
       dlms_meter->set_active_power_sensors(id(meter01_active_power_plus), id(meter01_active_power_minus)); // Set sensors to use for active power (optional)
-
       dlms_meter->set_active_energy_sensors(id(meter01_active_energy_plus), id(meter01_active_energy_minus)); // Set sensors to use for active energy (optional)
       dlms_meter->set_reactive_energy_sensors(id(meter01_reactive_energy_plus), id(meter01_reactive_energy_minus)); // Set sensors to use for reactive energy (optional)
-
       dlms_meter->set_timestamp_sensor(id(meter01_timestamp)); // Set sensor to use for timestamp (optional)
+      // uncomment for EVN SmartMeter
+      // dlms_meter->set_EVN_special_sensor(id(meter01_meternumber, id(meter01_power_factor))); // Set sensor to use for meterNumber (optional)
 
       dlms_meter->enable_mqtt(id(mqtt_broker), "meter01/data"); // Enable grouped together MQTT report, useful to get exact time with each data for storing results in InfluxDB
 
