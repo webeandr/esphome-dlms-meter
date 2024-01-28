@@ -542,7 +542,7 @@ namespace esphome
             this->timestamp = timestamp;
         }
 
-        void DlmsMeter::set_evnspecial_sensor(sensor::Sensor *power_factor, text_sensor::TextSensor *meternumber);
+        void DlmsMeter::set_evnspecial_sensor(sensor::Sensor *power_factor, text_sensor::TextSensor *meternumber)
         {
             this->power_factor = power_factor;
             this->meternumber = meternumber;
