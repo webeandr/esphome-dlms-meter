@@ -16,10 +16,7 @@ A custom component for ESPHome for reading meter data sent by the Kaifa MA309M v
 
 # Supported providers
 
-* [TINETZ-Tiroler Netze GmbH](https://www.tinetz.at)
-* [Salzburg Netz GmbH](https://www.salzburgnetz.at)
-* [Innsbrucker Kommunalbetriebe Aktiengesellschaft](https://www.ikb.at)
-* [Vorarlberger Energienetze GmbH](https://www.vorarlbergnetz.at)
+EVN / Netz Niederösterreich
 
 # Exposed sensors
 
@@ -35,6 +32,8 @@ A custom component for ESPHome for reading meter data sent by the Kaifa MA309M v
 * Active Energy Minus
 * Reactive Energy Plus
 * Reactive Energy Minus
+* Meter Number
+* Power Factor
 
 # Requirements
 
